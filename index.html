@@ -70,6 +70,11 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 #u{grid-column:2}#l{grid-row:2}#dn{grid-column:2;grid-row:2}#r{grid-column:3;grid-row:2}
 #toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:var(--card);border:1px solid var(--ls);padding:12px 22px;border-radius:999px;font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;z-index:50;transition:.35s var(--e)}#toast.on{opacity:1;transform:translate(-50%,0)}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.sg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-height:250px;overflow:auto;padding:2px}
+.card.sc.on{border-color:var(--aur);box-shadow:0 0 0 2px var(--aur) inset}.sc .cv{font-size:24px}.sc .n{display:block;font-size:12px;font-weight:600;padding:8px}
+.gp{width:100%;height:46px;background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:0 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--dim);font:inherit;font-size:14.5px;text-align:left}.gp.has{color:var(--paper)}.gp span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-height:50vh;overflow:auto;padding:2px;margin-bottom:6px}.gg button{display:flex;justify-content:space-between;gap:6px;background:var(--card);border:1.5px solid var(--line);padding:12px 14px;border-radius:12px;font-weight:600;font-size:13.5px}.gg button.on{border-color:var(--vio);background:rgba(183,155,255,.12);color:var(--vio)}
+#ov2{z-index:25}.rw{display:flex;justify-content:space-between;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}.rw span:first-child{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--mist);flex:none}.rw span:last-child{font-weight:600;text-align:right;font-size:14.5px}.rw .e{color:var(--dim);font-style:italic;font-weight:500}
 </style>
 </head>
 <body>
@@ -105,6 +110,7 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 
 <div class="tb" id="tb"><b id="tb-n"></b><div class="ar"><button id="u">▲</button><button id="l">◀</button><button id="dn">▼</button><button id="r">▶</button></div><button class="gh" id="tb-c">Limpar seleção</button></div>
 <div class="ov" id="ov"><div class="md" id="md"></div></div>
+<div class="ov" id="ov2"><div class="md" id="md2"></div></div>
 <div id="toast"></div>
 
 <script>
@@ -113,7 +119,7 @@ button{font-family:inherit;cursor:pointer;color:inherit}
 var KEY="yozora_v2",OLD="yozora_animes_v1";
 var T={anime:{n:"Anime",s:"anime assistido",p:"animes assistidos",e:"🎬"},filme:{n:"Filme",s:"filme assistido",p:"filmes assistidos",e:"🍿"},serie:{n:"Série",s:"série assistida",p:"séries assistidas",e:"📺"},manga:{n:"Mangá",s:"mangá lido",p:"mangás lidos",e:"📖"}};
 var GEN=["Ação","Aventura","Comédia","Drama","Fantasia","Ficção Científica","Romance","Slice of Life","Terror","Suspense","Mistério","Sobrenatural","Isekai","Mecha","Esporte","Musical","Histórico","Psicológico","Escolar","Seinen","Shoujo","Shounen"];
-var S={schema:2,tabs:[]},cur=null,org=false,sel=[],drag=null,cover=null,editing=null,addType=null;
+var genSel=[],linkId=null,S={schema:2,tabs:[]},cur=null,org=false,sel=[],drag=null,cover=null,editing=null,addType=null;
 var $=function(i){return document.getElementById(i)};
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function uid(){return window.crypto&&crypto.randomUUID?crypto.randomUUID():"id-"+Date.now()+Math.random().toString(16).slice(2)}
@@ -177,7 +183,7 @@ function renderGrid(){
       c.ondragstart=function(){drag=a.id};c.ondragover=function(e){e.preventDefault()};
       c.ondrop=function(e){e.preventDefault();if(drag&&drag!==a.id)dropOn(drag,a.id);drag=null};
       c.onclick=function(){var i=sel.indexOf(a.id);if(i>-1)sel.splice(i,1);else sel.push(a.id);renderGrid();tbar()}}
-    else c.onclick=function(){openForm(a.type,a)};
+    else c.onclick=function(){openView(a)};
     g.appendChild(c)});
 }
 function setOrg(v){org=v;$("org").classList.toggle("act",v);$("org-l").textContent=v?"Concluir":"Organizar";$("hint").hidden=!v;$("sb").hidden=v;sel=[];tbar();renderGrid()}
@@ -201,6 +207,41 @@ function closeM(){$("ov").classList.remove("on")}
 $("ov").addEventListener("click",function(e){if(e.target.id==="ov")closeM();var c=e.target.closest("[data-x]");if(c)closeM()});
 document.addEventListener("keydown",function(e){if(e.key==="Escape")closeM()});
 
+function fd(d){return d?d.split("-").reverse().join("/"):""}
+function openView(a){
+  var ch=[],r=a,g=0,p,n;
+  while(r.linkedPrevId&&(p=cur.items.find(function(x){return x.id===r.linkedPrevId}))&&g++<50)r=p;
+  n=r;g=0;while(n&&g++<50){ch.push(n);var m=n;n=cur.items.find(function(x){return x.linkedPrevId===m.id})}
+  var pv=cur.items.find(function(x){return x.id===a.linkedPrevId}),nx=cur.items.find(function(x){return x.linkedPrevId===a.id});
+  var al=(a.type==="anime"||a.type==="filme")?a.seasonAlert:null,R=[["Tipo",T[a.type].n]],add=function(l,v){R.push([l,v!=null&&String(v).trim()?v:""])};
+  if(a.type==="anime"){add("Status",a.dateEnd?"Concluído":a.dateStart?"Assistindo":"");add("Temporada","Temporada "+(a.season||1));add("Áudio",a.language);add("Gênero",(a.genres||[]).join(", "));if(a.hasSpecialEpisode)add("Episódio especial","Sim — "+(a.specialEpisodeCount||"?"))}
+  if(a.type==="manga"){add("Status",a.status);add("Capítulos lidos",a.chapters)}
+  if(a.type==="serie")add("Temporadas","assistidas "+(a.watched||[]).length+" de "+(a.seasons||0));
+  add(a.type==="manga"?"Onde leu":"Onde assistiu",a.place);add("Início",fd(a.dateStart));add("Fim",fd(a.dateEnd));
+  if(a.type==="anime"||a.type==="manga")add("Nota",fmt(a.rating));
+  add("Anotações",a.note);if(pv)add("Temporada anterior",pv.name);if(nx)add("Próxima temporada",nx.name);
+  var h='<div style="text-align:center"><div class="cv" style="width:min(60vw,220px);border-radius:18px;overflow:hidden;margin:0 auto 16px">'+(a.cover?'<img src="'+a.cover+'" alt="">':T[a.type].e)+'</div><h3>'+esc(a.name)+(ch.length>1?" — Temporada "+(a.season||1):"")+"</h3>";
+  if(pv||nx)h+='<div class="seg" style="margin-top:14px">'+(pv?'<button type="button" id="vp">← Diminuir Temporada</button>':"")+(nx?'<button type="button" id="vn">Avançar Temporada →</button>':"")+"</div>";
+  if(a.type==="anime"||a.type==="manga")h+='<p><span class="chip" style="font-size:14px;padding:7px 16px;color:var(--aur);border-color:var(--ls);background:var(--card)">★ '+fmt(a.rating)+"</span></p>";
+  if(al)h+='<div class="al" style="margin-top:6px;text-align:left"><span>'+altxt(al)+'</span><button type="button" class="btn s" id="vr" style="padding:8px 14px">Remover !</button></div>';
+  h+='<button type="button" class="gh" id="vd">detalhes ▾</button></div><div id="vdt" hidden>'+R.map(function(x){return'<div class="rw"><span>'+esc(x[0])+'</span><span'+(x[1]===""?' class="e">não informado':">"+esc(x[1]))+"</span></div>"}).join("")+'</div><div class="ma"><button class="btn s" data-x>Fechar</button><button class="btn p" id="ve">Editar</button></div>';
+  openM(h);
+  $("vd").onclick=function(){var d=$("vdt");d.hidden=!d.hidden;this.textContent=d.hidden?"detalhes ▾":"detalhes ▴"};
+  $("ve").onclick=function(){openForm(a.type,a)};
+  if($("vp"))$("vp").onclick=function(){openView(pv)};if($("vn"))$("vn").onclick=function(){openView(nx)};
+  if($("vr"))$("vr").onclick=function(){var x=a.seasonAlert,w=x.status!=="finished"&&confirm("Essa temporada você já assistiu?\nOK = já assisti (a IA não sugere de novo) · Cancelar = outro motivo");
+    if(w)(a.watchedSeasonsLog=a.watchedSeasonsLog||[]).push({seasonNumber:x.seasonNumber||(a.season||1)+1,dateWatched:new Date().toISOString().slice(0,10)});
+    (a.alertHistory=a.alertHistory||[]).push({status:x.status,seasonNumber:x.seasonNumber,removedAt:Date.now()});a.seasonAlert=null;save();renderGrid();openView(a);toast("Alerta removido.")}
+}
+function genPick(cb){
+  var tmp=genSel.slice(),m=$("md2");
+  m.innerHTML='<h3>Gêneros</h3><p class="mh">toque para marcar quantos quiser, depois confirme.</p><p class="eb" id="gcn" style="margin-bottom:12px"></p><div class="gg">'+GEN.map(function(x){return'<button type="button" data-g="'+esc(x)+'"><span>'+esc(x)+'</span><span></span></button>'}).join("")+'</div><div class="ma"><button type="button" class="btn s" id="gc">Cancelar</button><button type="button" class="btn p" id="gk">Confirmar</button></div>';
+  function ui(){$("gcn").textContent=tmp.length?tmp.length+(tmp.length===1?" selecionado":" selecionados"):"nenhum selecionado";m.querySelectorAll(".gg button").forEach(function(b){var on=tmp.indexOf(b.dataset.g)>-1;b.classList.toggle("on",on);b.lastChild.textContent=on?"✓":""})}
+  m.querySelector(".gg").onclick=function(e){var b=e.target.closest("button");if(!b)return;var i=tmp.indexOf(b.dataset.g);if(i>-1)tmp.splice(i,1);else tmp.push(b.dataset.g);ui()};
+  $("gc").onclick=function(){$("ov2").classList.remove("on")};
+  $("gk").onclick=function(){genSel=tmp.slice();$("ov2").classList.remove("on");cb()};
+  ui();$("ov2").classList.add("on")
+}
 function newTab(){
   var types=[];
   openM('<h3>Criar Aba</h3><p class="mh">dê um nome e escolha até 2 tipos de conteúdo.</p><div class="f"><label>Nome</label><input type="text" id="tn" placeholder="ex: Animes"></div><div class="f"><label>Tipo (máx. 2)</label><div class="seg g" id="tt">'+Object.keys(T).map(function(k){return'<button type="button" data-t="'+k+'">'+T[k].e+" "+T[k].n+"</button>"}).join("")+'</div></div><div class="ma"><button class="btn s" data-x>Cancelar</button><button class="btn p" id="tok">Criar</button></div>');
@@ -228,7 +269,7 @@ function openForm(type,it){
   if(it&&(type==="anime"||type==="filme")){var x=tip(it,cur.items).seasonAlert;h+='<div class="al"><span>'+(type==="filme"?"Terá continuação? ":"Continuação: ")+altxt(x)+"</span>"+(x?'<button type="button" class="btn s" id="ra" style="padding:8px 14px">Remover !</button>':"")+"</div>"}
   h+='<form id="fm" novalidate>'+fld("Imagem",'<label class="dz"><i id="pv">'+(cover?'<img src="'+cover+'" alt="">':"🖼")+'</i><span><b style="color:var(--paper)">Escolher imagem</b><br>PNG ou JPG</span><input type="file" id="fc" accept="image/*"></label>');
   h+=fld("Nome",'<input type="text" data-k="name" value="'+esc(v.name||"")+'" placeholder="ex: Frieren">');
-  if(type==="anime")h+=fld("Dublado ou legendado",segH("language",["Dublado","Legendado"],v.language||"Legendado"))+fld("Gênero",segH("genres",GEN,v.genres||[],"g"));
+  if(type==="anime")h+=fld("Temporada",'<input type="number" min="1" data-k="season" id="sn" value="'+(v.season||1)+'">')+'<div id="lk"></div>'+fld("Dublado ou legendado",segH("language",["Dublado","Legendado"],v.language||"Legendado"))+fld("Gênero",'<button type="button" class="gp" id="gb"></button>');
   if(type==="manga")h+=fld("Status",segH("status",["Lendo","Concluído"],v.status||"Lendo"))+fld("Capítulos lidos",'<input type="number" min="0" data-k="chapters" value="'+(v.chapters!=null?v.chapters:"")+'" placeholder="ex: 120">');
   if(type==="serie")h+=fld("Quantidade de temporadas",'<input type="number" min="1" id="ns" value="'+(v.seasons||1)+'">')+fld("Temporadas assistidas (toque para marcar)",'<div class="seg g w" id="sw"></div>');
   h+=fld(type==="manga"?"Onde leu?":"Onde assistiu?",'<input type="text" data-k="place" value="'+esc(v.place||"")+'" placeholder="ex: '+(type==="manga"?"MangaPlus":"Crunchyroll, Netflix...")+'">');
@@ -244,6 +285,21 @@ function openForm(type,it){
     for(var i=1;i<=n;i++)(function(i){var b=document.createElement("button");b.type="button";b.textContent="T"+i;if(watched.indexOf(i)>-1)b.className="on";
       b.onclick=function(){var k=watched.indexOf(i);if(k>-1)watched.splice(k,1);else watched.push(i);b.classList.toggle("on")};w.appendChild(b)})(i)}
   if(type==="serie"){$("ns").oninput=sw;sw()}
+  if(type==="anime"){
+    genSel=(v.genres||[]).slice();linkId=v.linkedPrevId||null;
+    var gl=function(){var b=$("gb");b.className="gp"+(genSel.length?" has":"");b.innerHTML="<span>"+(genSel.length?esc(genSel.join(", ")):"Escolher gêneros")+"</span>›"};gl();
+    $("gb").onclick=function(){genPick(gl)};
+    var shown=false;
+    var lk=function(){
+      if((parseInt($("sn").value,10)||1)<2){$("lk").innerHTML="";shown=false;linkId=null;return}
+      if(shown)return;shown=true;
+      $("lk").innerHTML=fld("Juntar com a temporada",'<div class="seg"><button type="button" id="ln">Não</button><button type="button" id="ls">Sim</button></div><p class="mh" id="lh" style="margin:12px 0 8px" hidden>qual foi a temporada antiga?</p><div class="sg" id="lgr" hidden></div>');
+      var gr=function(){var b=$("lgr");b.innerHTML="";var pool=cur.items.filter(function(x){return x.type==="anime"&&(!it||x.id!==it.id)}).reverse();
+        if(!pool.length)b.innerHTML='<p class="mh">nenhum outro anime na aba ainda.</p>';
+        pool.forEach(function(x){var c=document.createElement("button");c.type="button";c.className="card sc"+(x.id===linkId?" on":"");c.innerHTML='<span class="cv">'+(x.cover?'<img src="'+x.cover+'" alt="">':"🎬")+'</span><span class="n">'+esc(x.name)+"</span>";c.onclick=function(){linkId=x.id;gr()};b.appendChild(c)})};
+      var st=function(y){$("ln").classList.toggle("on",!y);$("ls").classList.toggle("on",y);$("lgr").hidden=!y;$("lh").hidden=!y;if(y)gr();else linkId=null};
+      $("ln").onclick=function(){st(false)};$("ls").onclick=function(){st(true)};st(!!linkId)};
+    $("sn").oninput=lk;lk()}
   if($("ra"))$("ra").onclick=function(){var t=tip(it,cur.items),x=t.seasonAlert;if(!x)return;
     var w=x.status!=="finished"&&confirm("Essa temporada você já assistiu?\nOK = já assisti (a IA não sugere de novo) · Cancelar = outro motivo");
     if(w){(t.watchedSeasonsLog=t.watchedSeasonsLog||[]).push({seasonNumber:x.seasonNumber||(t.season||1)+1,dateWatched:new Date().toISOString().slice(0,10)})}
@@ -258,6 +314,7 @@ function openForm(type,it){
       else if(el.type==="range")o[k]=Number(el.value);
       else if(el.type==="number")o[k]=el.value===""?null:Number(el.value);
       else o[k]=el.value.trim()});
+    if(type==="anime"){o.genres=genSel.slice();o.season=parseInt($("sn").value,10)||1;o.linkedPrevId=o.season>1?linkId:null}
     if(type==="serie"){o.seasons=Math.max(1,parseInt($("ns").value,10)||1);o.watched=watched.sort(function(a,b){return a-b})}
     if(!it)cur.items.push(o);save();closeM();renderGrid();toast(it?"Alterações salvas.":"Adicionado.")}
 }

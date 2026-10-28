@@ -2,407 +2,140 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0e0d13">
-<title>YOZORA — Diário de Animes, Filmes e Séries</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23ff8fb1' d='M22 4a12 12 0 1 0 6 22.2A14 14 0 0 1 22 4Z'/%3E%3C/svg%3E">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sky — Horários de Aula</title>
 <style>
-:root{--ink:#0e0d13;--dusk:#161420;--card:#191722;--hov:#1e1c29;--line:rgba(241,238,252,.08);--ls:rgba(241,238,252,.18);--paper:#f1eefc;--mist:#9d9ab8;--dim:#68657f;--bloom:#ff8fb1;--bi:#2b0f18;--aur:#8de8d0;--vio:#b79bff;--red:#ff5470;--yel:#ffcf56;--grn:#7ee6a8;--e:cubic-bezier(.22,1,.36,1)}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%}
-body{background:var(--ink);color:var(--paper);font-family:'Manrope',sans-serif;color-scheme:dark;-webkit-font-smoothing:antialiased;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
-h1,h2,h3{font-family:'Fraunces',serif;margin:0;font-weight:600;letter-spacing:-.01em}
-button{font-family:inherit;cursor:pointer;color:inherit}
-#sky{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.st{position:absolute;border-radius:50%;background:#fff;animation:tw 3s ease-in-out infinite}
-@keyframes tw{0%,100%{opacity:.1}50%{opacity:.9}}
-.gl{position:absolute;border-radius:50%;filter:blur(80px);opacity:.28}
-.scr{display:none;position:relative;z-index:1;min-height:100vh}.scr.on{display:block}
-.btn{border:0;border-radius:999px;padding:13px 24px;font-weight:700;font-size:14.5px;display:inline-flex;align-items:center;gap:8px;transition:transform .25s var(--e),background .2s}
-.btn:active{transform:scale(.96)}.p{background:var(--bloom);color:var(--bi)}.p:hover{transform:translateY(-2px)}
-.s{background:var(--card);border:1px solid var(--ls)}.s:hover{background:var(--hov)}.s.act{background:var(--aur);color:#0f2b23;border-color:var(--aur)}
-.d{background:none;border:1.5px solid rgba(255,138,138,.35);color:#ff8a8a}
-.ic{width:42px;height:42px;border-radius:50%;background:var(--card);border:1px solid var(--ls);display:inline-flex;align-items:center;justify-content:center;font-size:16px}
-.gh{background:none;border:0;color:var(--mist);font-weight:600;font-size:14px;padding:8px 4px}.gh:hover{color:var(--paper)}
-.land{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:18px;padding:32px}
-.land h1{font-size:clamp(2.2rem,7vw,4.4rem);line-height:1.05}.land h1 em{color:var(--bloom)}
-.mark{letter-spacing:.32em;font-size:13px;font-weight:800;color:var(--mist);text-transform:uppercase}
-.sub{color:var(--mist);max-width:430px;line-height:1.6;margin:0}
-.top{display:flex;justify-content:space-between;align-items:center;padding:20px 28px 0;gap:12px;flex-wrap:wrap}.top div{display:flex;gap:10px}
-.wrap{max-width:1080px;margin:0 auto;padding:26px 28px 120px}
-.hd{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
-.hd h2{font-size:clamp(1.7rem,4vw,2.3rem)}.eb{color:var(--aur);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin:0 0 6px}
-.acts{display:flex;gap:10px;flex-wrap:wrap}
-.sb{display:flex;align-items:center;gap:10px;max-width:340px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:0 16px;margin-bottom:20px}
-.sb input{flex:1;background:none;border:0;color:var(--paper);height:44px;font:inherit;font-size:14px;outline:0;min-width:0}
-.hint{background:rgba(141,232,208,.08);border:1px solid rgba(141,232,208,.25);color:var(--aur);font-size:13px;font-weight:600;line-height:1.5;padding:12px 16px;border-radius:12px;margin:0 0 18px}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-@media(max-width:920px){.grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:680px){.grid{grid-template-columns:repeat(2,1fr);gap:13px}}
-.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;text-align:left;padding:0;display:flex;flex-direction:column;transition:transform .3s var(--e),border-color .3s}
-.card:hover{transform:translateY(-4px);border-color:rgba(255,143,177,.35)}.card.sel{border-color:var(--aur);box-shadow:0 0 0 2px var(--aur) inset}
-.cv{position:relative;aspect-ratio:2/3;background:linear-gradient(160deg,#221f30,#15131e);display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:34px}
-.cv img{width:100%;height:100%;object-fit:cover;display:block}
-.tg{position:absolute;top:9px;left:9px;background:rgba(10,9,15,.85);font-weight:800;font-size:12px;padding:5px 9px;border-radius:8px}
-.ty{position:absolute;top:9px;right:9px;background:rgba(183,155,255,.9);color:#1c1330;font-weight:800;font-size:10.5px;padding:4px 8px;border-radius:8px}
-.bd{position:absolute;right:9px;bottom:9px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:800 15px 'Fraunces',serif;box-shadow:0 0 0 2px var(--ink)}
-.bd.red{background:var(--red);color:#2b0510}.bd.yellow{background:var(--yel);color:#3a2600}.bd.green{background:var(--grn);color:#0c2c17}.bd.finished{background:var(--paper);color:var(--ink)}
-.nm{padding:12px 13px 14px;font:700 15px/1.28 'Fraunces',serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.tab{padding:22px}.tab h3{font-size:21px;margin-bottom:8px}.tab small{color:var(--mist);display:block;line-height:1.7}
-.chip{display:inline-block;background:rgba(183,155,255,.14);border:1px solid rgba(183,155,255,.3);color:var(--vio);font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;margin:2px 4px 2px 0}
-.emp{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--mist);line-height:1.6}.emp strong{display:block;font:600 21px 'Fraunces',serif;color:var(--paper);margin-bottom:8px}
-.ov{position:fixed;inset:0;z-index:20;background:rgba(7,6,11,.78);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px}.ov.on{display:flex}
-.md{background:var(--dusk);border:1px solid var(--line);border-radius:24px;width:100%;max-width:470px;max-height:90vh;overflow:auto;padding:28px}
-.md h3{font-size:22px;margin-bottom:4px}.mh{color:var(--mist);font-size:13.5px;margin:0 0 18px;line-height:1.5}
-.f{margin-bottom:15px}.f>label{display:block;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mist);margin-bottom:7px}
-.f input[type=text],.f input[type=number]{width:100%;height:46px;background:var(--ink);border:1px solid var(--line);color:var(--paper);padding:0 14px;border-radius:12px;font:inherit;font-size:14.5px}
-.f input:focus{outline:0;border-color:rgba(255,143,177,.45)}
-.seg{display:flex;gap:8px;flex-wrap:wrap}.seg button{flex:1;min-width:84px;background:var(--ink);border:1.5px solid var(--line);color:var(--mist);padding:10px;border-radius:12px;font-weight:700;font-size:13px}
-.seg button.on{background:var(--vio);border-color:var(--vio);color:#1c1330}.seg.g button{flex:0 0 auto;min-width:0;padding:8px 13px;font-size:12.5px}
-.seg.w button.on{background:var(--grn);border-color:var(--grn);color:#0c2c17}
-.rg{display:flex;align-items:center;gap:12px}.rg input{flex:1;accent-color:var(--bloom)}.rg b{font:700 16px 'Fraunces',serif;color:var(--aur);min-width:48px;text-align:right}
-.dz{display:flex;align-items:center;gap:14px;border:1.5px dashed var(--ls);border-radius:16px;padding:12px;cursor:pointer;font-size:13px;color:var(--mist)}
-.dz i{width:56px;height:56px;border-radius:11px;background:var(--ink);overflow:hidden;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:22px}.dz i img{width:100%;height:100%;object-fit:cover}.dz input{display:none}
-.ma{display:flex;justify-content:flex-end;gap:10px;margin-top:22px;flex-wrap:wrap}.ma.sp{justify-content:space-between}
-.al{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:15px;font-size:13px;color:var(--mist)}
-.tb{position:fixed;left:50%;bottom:24px;z-index:15;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--dusk);border:1px solid var(--ls);border-radius:22px;padding:14px 18px;display:flex;flex-direction:column;align-items:center;gap:9px;transition:.3s var(--e)}
-.tb.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}.tb b{font-size:12.5px;color:var(--aur)}
-.ar{display:grid;grid-template-columns:54px 54px 54px;gap:8px}.ar button{height:50px;background:var(--card);border:1px solid var(--ls);border-radius:14px;font-size:20px}.ar button:hover{background:var(--bloom);color:var(--bi)}
-#u{grid-column:2}#l{grid-row:2}#dn{grid-column:2;grid-row:2}#r{grid-column:3;grid-row:2}
-#toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:var(--card);border:1px solid var(--ls);padding:12px 22px;border-radius:999px;font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;z-index:50;transition:.35s var(--e)}#toast.on{opacity:1;transform:translate(-50%,0)}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-.sg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-height:250px;overflow:auto;padding:2px}
-.card.sc.on{border-color:var(--aur);box-shadow:0 0 0 2px var(--aur) inset}.sc .cv{font-size:24px}.sc .n{display:block;font-size:12px;font-weight:600;padding:8px}
-.gp{width:100%;height:46px;background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:0 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--dim);font:inherit;font-size:14.5px;text-align:left}.gp.has{color:var(--paper)}.gp span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.gg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-height:50vh;overflow:auto;padding:2px;margin-bottom:6px}.gg button{display:flex;justify-content:space-between;gap:6px;background:var(--card);border:1.5px solid var(--line);padding:12px 14px;border-radius:12px;font-weight:600;font-size:13.5px}.gg button.on{border-color:var(--vio);background:rgba(183,155,255,.12);color:var(--vio)}
-#ov2{z-index:25}.rw{display:flex;justify-content:space-between;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}.rw span:first-child{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--mist);flex:none}.rw span:last-child{font-weight:600;text-align:right;font-size:14.5px}.rw .e{color:var(--dim);font-style:italic;font-weight:500}
-@keyframes dr{from{transform:translate(0,0) scale(1)}to{transform:translate(70px,-50px) scale(1.18)}}
-.gl{animation:dr 22s ease-in-out infinite alternate;will-change:transform}
-.au{position:absolute;left:-20%;width:140%;height:170px;filter:blur(60px);opacity:.17;background:linear-gradient(90deg,transparent,var(--aur),var(--vio),var(--bloom),transparent);animation:aw 18s ease-in-out infinite alternate}
-@keyframes aw{from{transform:translateX(-8%) skewY(-4deg)}to{transform:translateX(8%) skewY(4deg) scaleY(1.5)}}
-.sh{position:absolute;height:2px;width:130px;border-radius:2px;background:linear-gradient(90deg,transparent,#fff);opacity:0;animation:sh 1.3s ease-out forwards}
-@keyframes sh{0%{opacity:0;transform:translate(0,0) rotate(25deg)}15%{opacity:1}100%{opacity:0;transform:translate(420px,196px) rotate(25deg)}}
-.pt{position:absolute;top:-30px;border-radius:80% 0 80% 0;background:linear-gradient(135deg,#ffc7da,#ff8fb1);opacity:.7;animation:pt linear infinite;will-change:transform}
-@keyframes pt{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(var(--dx),112vh) rotate(540deg)}}
-.ff{position:absolute;bottom:-10px;border-radius:50%;background:var(--aur);box-shadow:0 0 10px 3px rgba(141,232,208,.6);animation:ff linear infinite;will-change:transform}
-@keyframes ff{0%{transform:translate(0,0);opacity:0}15%{opacity:.9}85%{opacity:.6}100%{transform:translate(var(--dx),-110vh);opacity:0}}
-.mn{position:absolute;top:7%;right:8%;width:84px;height:84px;opacity:.55;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23ff8fb1' d='M22 4a12 12 0 1 0 6 22.2A14 14 0 0 1 22 4Z'/%3E%3C/svg%3E") center/contain no-repeat;filter:drop-shadow(0 0 22px rgba(255,143,177,.6));animation:mn 9s ease-in-out infinite alternate}
-@keyframes mn{from{transform:translateY(0) rotate(-6deg)}to{transform:translateY(14px) rotate(6deg)}}
+*{box-sizing:border-box}
+body{margin:0;background:#080d19;color:#eef4ff;font-family:Arial,sans-serif}
+header{padding:22px;background:#101a2c;border-bottom:1px solid #263955;display:flex;justify-content:space-between;align-items:center}
+h1{font-size:25px;margin:0;color:#75aaff}
+header p{margin:5px 0 0;color:#9aaaca;font-size:12px}
+main{max-width:950px;margin:30px auto;padding:0 16px}
+h2{font-size:19px}
+.card{background:#101a2c;border:1px solid #263955;border-radius:16px;padding:20px;margin-bottom:18px}
+button{background:#4388ff;color:white;border:0;padding:12px 16px;border-radius:10px;cursor:pointer;font-weight:bold}
+button:hover{background:#306bd0}
+input,select{background:#080f1d;color:white;border:1px solid #344867;border-radius:9px;padding:12px;width:100%;margin:5px 0 12px}
+label{font-size:13px;color:#b9c9e2}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lesson{padding:13px;background:#0a1424;border:1px solid #263955;border-radius:12px;margin-top:10px;display:flex;justify-content:space-between;gap:12px}
+.muted{color:#9aaaca;font-size:13px}
+.highlight{color:#65b5ff}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+nav button{background:#192945}
+nav button.active{background:#4388ff}
+.hidden{display:none}
+footer{text-align:center;color:#7183a2;padding:30px;font-size:12px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}header{padding:16px}h1{font-size:20px}}
 </style>
 </head>
 <body>
-<div id="sky"></div>
-
-<section class="scr on" id="s-land"><div class="land">
-  <span class="mark">🌙 yozora</span>
-  <h1>seu <em>diário</em><br>de animes, filmes e séries</h1>
-  <p class="sub">organize tudo o que você assistiu ou leu em abas — tudo salvo só no seu navegador.</p>
-  <button class="btn p" id="go">Ver Abas →</button>
-</div></section>
-
-<section class="scr" id="s-tabs">
-  <div class="top"><button class="gh" id="t-back">← voltar</button>
-    <div><button class="ic" id="bk-out" title="Exportar backup">⤓</button><button class="ic" id="bk-in" title="Importar backup">⤒</button><input type="file" id="f-bk" accept=".json,application/json" hidden></div></div>
-  <div class="wrap">
-    <div class="hd"><div><p class="eb">suas coleções</p><h2>Minhas abas</h2></div><button class="btn p" id="new-tab">＋ Criar Aba</button></div>
-    <div class="grid" id="tabs-grid"></div>
-  </div>
+<header>
+<div><h1>✦ Sky Horários</h1><p>ORGANIZAÇÃO ESCOLAR</p></div>
+<div style="text-align:right"><strong id="clock">00:00:00</strong><p id="date"></p></div>
+</header>
+<main>
+<h2 id="greeting">Olá! 👋</h2>
+<p class="muted">Organize suas aulas e acompanhe seus horários.</p>
+<nav>
+<button class="active" onclick="show('home',this)">Visão geral</button>
+<button onclick="show('schedule',this)">Grade semanal</button>
+<button onclick="show('extras',this)">Funções extras</button>
+</nav>
+<section id="home">
+<div class="card">
+<h2>🔵 Aula no momento</h2>
+<div id="current"><p class="muted">Nenhuma aula cadastrada.</p></div>
+</div>
+<div class="card">
+<h2>➡️ Próxima aula</h2>
+<div id="next"><p class="muted">Cadastre suas aulas para começar.</p></div>
+</div>
+<div class="card">
+<h2>📅 Aulas de hoje</h2>
+<div id="today"></div>
+</div>
 </section>
-
-<section class="scr" id="s-tab">
-  <div class="top"><button class="gh" id="tab-back">← abas</button>
-    <div><button class="ic" id="ai" title="Análise por IA" hidden>✨</button><button class="ic" id="tab-set" title="Renomear / excluir aba">⚙</button></div></div>
-  <div class="wrap">
-    <div class="hd"><div><p class="eb" id="cnt"></p><h2 id="tab-name"></h2></div>
-      <div class="acts"><button class="btn s" id="org">⇄ <span id="org-l">Organizar</span></button><button class="btn p" id="add">＋ Adicionar</button></div></div>
-    <div class="sb" id="sb">🔍<input type="text" id="q" placeholder="Buscar pelo nome..." autocomplete="off"></div>
-    <p class="hint" id="hint" hidden>Arraste um card sobre outro para trocar de lugar, ou toque nas capas para selecionar e use as setas grandes embaixo. Toque em "Concluir" quando terminar.</p>
-    <div class="grid" id="grid"></div>
-  </div>
+<section id="schedule" class="hidden">
+<div class="card">
+<h2>Adicionar aula</h2>
+<form id="lessonForm">
+<div class="grid">
+<div><label>Dia da semana</label><select id="day"><option value="1">Segunda-feira</option><option value="2">Terça-feira</option><option value="3">Quarta-feira</option><option value="4">Quinta-feira</option><option value="5">Sexta-feira</option><option value="6">Sábado</option><option value="0">Domingo</option></select></div>
+<div><label>Disciplina</label><input id="subject" placeholder="Ex.: Matemática" required></div>
+<div><label>Horário de início</label><input id="start" type="time" value="07:00" required></div>
+<div><label>Horário de término</label><input id="end" type="time" value="07:50" required></div>
+<div><label>Série e turma</label><input id="classroom" placeholder="Ex.: 9º C" required></div>
+<div><label>Sala</label><input id="room" placeholder="Ex.: 01" required></div>
+<div><label>Utiliza plataforma?</label><select id="usePlatform"><option value="no">Não</option><option value="yes">Sim</option></select></div>
+<div id="platformBox" class="hidden"><label>Número da plataforma</label><input id="platform" placeholder="Ex.: 03"></div>
+</div>
+<p><label><input id="recurring" type="checkbox" checked style="width:auto"> Repetir toda semana</label></p>
+<button type="submit">+ Salvar aula</button>
+</form>
+</div>
+<div class="card">
+<h2>Minha grade</h2>
+<div id="scheduleList"></div>
+</div>
 </section>
-
-<div class="tb" id="tb"><b id="tb-n"></b><div class="ar"><button id="u">▲</button><button id="l">◀</button><button id="dn">▼</button><button id="r">▶</button></div><button class="gh" id="tb-c">Limpar seleção</button></div>
-<div class="ov" id="ov"><div class="md" id="md"></div></div>
-<div class="ov" id="ov2"><div class="md" id="md2"></div></div>
-<div id="toast"></div>
-
+<section id="extras" class="hidden">
+<div class="card">
+<h2>⏱ Temporizador</h2>
+<label>Tempo em minutos</label><input id="minutes" type="number" min="1" value="5">
+<h2 id="timer">05:00</h2>
+<button onclick="startTimer()">Iniciar</button>
+<button onclick="pauseTimer()">Pausar</button>
+<button onclick="resetTimer()">Reiniciar</button>
+</div>
+<div class="card">
+<h2>💡 Sugestões</h2>
+<p class="muted">Tem uma ideia para melhorar o aplicativo? Envie sua sugestão.</p>
+<a href="https://forms.gle/pQYmsRHayQn6UW2q7" target="_blank" rel="noopener"><button>Enviar sugestão ↗</button></a>
+</div>
+</section>
+</main>
+<footer>Sky Horários · Projeto de demonstração</footer>
 <script>
-(function(){
-"use strict";
-var KEY="yozora_v2",OLD="yozora_animes_v1";
-var T={anime:{n:"Anime",s:"anime assistido",p:"animes assistidos",e:"🎬"},filme:{n:"Filme",s:"filme assistido",p:"filmes assistidos",e:"🍿"},serie:{n:"Série",s:"série assistida",p:"séries assistidas",e:"📺"},manga:{n:"Mangá",s:"mangá lido",p:"mangás lidos",e:"📖"}};
-var GEN=["Ação","Aventura","Comédia","Drama","Fantasia","Ficção Científica","Romance","Slice of Life","Terror","Suspense","Mistério","Sobrenatural","Isekai","Mecha","Esporte","Musical","Histórico","Psicológico","Escolar","Seinen","Shoujo","Shounen"];
-var genSel=[],linkId=null,S={schema:2,tabs:[]},cur=null,org=false,sel=[],drag=null,cover=null,editing=null,addType=null;
-var $=function(i){return document.getElementById(i)};
-function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
-function uid(){return window.crypto&&crypto.randomUUID?crypto.randomUUID():"id-"+Date.now()+Math.random().toString(16).slice(2)}
-function norm(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
-var tt;function toast(m){var e=$("toast");e.textContent=m;e.classList.add("on");clearTimeout(tt);tt=setTimeout(function(){e.classList.remove("on")},3200)}
-function rd(k){try{return localStorage.getItem(k)}catch(e){return null}}
-function wr(k,v){try{localStorage.setItem(k,v);return true}catch(e){return false}}
-var locked=false;
-function save(){if(locked)return;if(!wr(KEY,JSON.stringify(S)))toast("Não foi possível salvar — armazenamento cheio?")}
-
-/* ===== carregar + migrar (nenhum anime antigo é perdido) ===== */
-function load(){
-  var raw=rd(KEY),old=rd(OLD);
-  if(raw){
-    try{var d=JSON.parse(raw);if(d&&Array.isArray(d.tabs)){S=d;return}}catch(e){}
-    wr(KEY+"_corrompido",raw);locked=true;toast("Dados ilegíveis: nada foi sobrescrito. Importe seu backup.");return;
-  }
-  if(old){
-    if(!rd(OLD+"_backup"))wr(OLD+"_backup",old);
-    try{var l=JSON.parse(old);
-      if(Array.isArray(l)&&l.length){l.forEach(function(a){a.type="anime";if(!a.id)a.id=uid()});
-        S.tabs.push({id:uid(),name:"Animes",types:["anime"],items:l});save();setTimeout(function(){toast("Seus animes antigos foram preservados na aba \"Animes\".")},600)}
-    }catch(e){locked=true;toast("Dados antigos ilegíveis: preservados sem alteração.")}
-  }
+const names=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+let lessons=[];
+try{lessons=JSON.parse(localStorage.getItem('skyLessons')||'[]')}catch(e){}
+let timerInterval=null,remaining=300;
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem('skyLessons',JSON.stringify(lessons));render()}
+function show(id,btn){document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));$(id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render()}
+function safe(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('usePlatform').onchange=()=> $('platformBox').classList.toggle('hidden',$('usePlatform').value!=='yes');
+$('lessonForm').onsubmit=e=>{
+e.preventDefault();
+const x={id:Date.now().toString(),day:Number($('day').value),subject:$('subject').value.trim(),start:$('start').value,end:$('end').value,classroom:$('classroom').value.trim(),room:$('room').value.trim(),platform:$('usePlatform').value==='yes'?$('platform').value.trim():'',recurring:$('recurring').checked};
+if(x.end<=x.start){alert('O término deve ser depois do início.');return}
+lessons.push(x);save();e.target.reset();$('platformBox').classList.add('hidden');$('start').value='07:00';$('end').value='07:50';$('recurring').checked=true;alert('Aula salva com sucesso!');
+};
+function removeLesson(id){if(confirm('Deseja excluir esta aula?')){lessons=lessons.filter(x=>x.id!==id);save()}}
+function render(){
+const now=new Date(),day=now.getDay(),time=now.toTimeString().slice(0,5);
+const list=lessons.filter(x=>Number(x.day)===day).sort((a,b)=>a.start.localeCompare(b.start));
+const current=list.find(x=>x.start<=time&&x.end>time),next=list.find(x=>x.start>time);
+function detail(x){return '<strong>'+safe(x.subject)+'</strong><br><span class="muted">'+safe(x.classroom)+' · Sala '+safe(x.room)+(x.platform?' · Plataforma '+safe(x.platform):'')+'</span><br><span class="highlight">'+safe(x.start)+' – '+safe(x.end)+'</span>'}
+$('current').innerHTML=current?detail(current):'<p class="muted">Nenhuma aula neste horário.</p>';
+$('next').innerHTML=next?detail(next):'<p class="muted">Não há próxima aula cadastrada para hoje.</p>';
+$('today').innerHTML=list.length?list.map(x=>'<div class="lesson"><div>'+detail(x)+'</div></div>').join(''):'<p class="muted">Dia livre! Nenhuma aula cadastrada.</p>';
+$('scheduleList').innerHTML=lessons.length?lessons.slice().sort((a,b)=>a.day-b.day||a.start.localeCompare(b.start)).map(x=>'<div class="lesson"><div><strong>'+safe(names[x.day])+' · '+safe(x.subject)+'</strong><br><span class="muted">'+safe(x.classroom)+' · Sala '+safe(x.room)+'</span><br><span class="highlight">'+safe(x.start)+' – '+safe(x.end)+'</span>'+(x.recurring?'<br><span class="muted">Repetição semanal</span>':'<br><span class="muted">Recorrência desativada no protótipo</span>')+'</div><button onclick="removeLesson(\''+x.id+'\')">Excluir</button></div>').join(''):'<p class="muted">Você ainda não cadastrou aulas.</p>';
 }
-function recalc(){var t=new Date().toISOString().slice(0,10),c=0;S.tabs.forEach(function(b){b.items.forEach(function(a){var x=a.seasonAlert;if(x&&x.releaseDate&&x.status==="yellow"&&x.releaseDate<=t){x.status="green";c=1}})});if(c)save()}
-
-/* ===== helpers de dados ===== */
-function roots(b){return b.items.filter(function(a){return !a.linkedPrevId})}
-function tip(a,l){var n=a,g=0,x;while((x=l.find(function(y){return y.linkedPrevId===n.id}))&&g++<50)n=x;return n}
-function fmt(n){return (Math.round(Number(n||0)*10)/10)+"/10"}
-function show(n){document.querySelectorAll(".scr").forEach(function(s){s.classList.toggle("on",s.id==="s-"+n)});window.scrollTo(0,0)}
-function sob(a){var x=a&&a.seasonAlert;return x&&x.status?'<span class="bd '+x.status+'">'+(x.status==="red"||x.status==="yellow"?"!":"✓")+'</span>':""}
-function altxt(x){if(!x)return"nenhum no momento";var d=x.releaseDate?x.releaseDate.split("-").reverse().join("/"):"";return({red:"🔴 continuação confirmada, sem data",yellow:"🟡 continuação confirmada — "+(d||"data definida"),green:"🟢 nova temporada lançada"+(d?" em "+d:""),finished:"⚪✔ obra totalmente finalizada"})[x.status]||""}
-
-/* ===== telas ===== */
-function renderTabs(){
-  var g=$("tabs-grid");g.innerHTML="";
-  if(!S.tabs.length){g.innerHTML='<div class="emp"><strong>nenhuma aba ainda</strong>crie sua primeira aba para começar — por exemplo "Animes".</div>';return}
-  S.tabs.forEach(function(b){
-    var c=document.createElement("button");c.className="card tab";
-    c.innerHTML="<h3>"+esc(b.name)+"</h3>"+b.types.map(function(t){return'<span class="chip">'+T[t].e+" "+T[t].n+"</span>"}).join("")+"<small>"+roots(b).length+" "+(roots(b).length===1?"obra":"obras")+"</small>";
-    c.onclick=function(){openTab(b.id)};g.appendChild(c)});
+function tick(){
+const d=new Date();
+$('clock').textContent=[d.getHours(),d.getMinutes(),d.getSeconds()].map(n=>String(n).padStart(2,'0')).join(':');
+$('date').textContent=d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
+$('greeting').textContent=(d.getHours()<12?'Bom dia':d.getHours()<18?'Boa tarde':'Boa noite')+'! 👋';
+render();
 }
-function openTab(id){cur=S.tabs.find(function(b){return b.id===id});if(!cur)return;org=false;sel=[];
-  $("q").value="";$("tab-name").textContent=cur.name;
-  $("ai").hidden=!(cur.types.indexOf("anime")>-1||cur.types.indexOf("filme")>-1);
-  setOrg(false);show("tab")}
-function counts(){
-  var r=roots(cur);return cur.types.map(function(t){var n=r.filter(function(a){return a.type===t}).length;return n+" "+(n===1?T[t].s:T[t].p)}).join(" · ")}
-function renderGrid(){
-  var g=$("grid"),all=roots(cur),q=norm($("q").value);g.innerHTML="";$("cnt").textContent=counts();
-  if(!all.length){g.innerHTML='<div class="emp"><strong>ainda vazio por aqui</strong>toque em "Adicionar" para começar esta aba.</div>';return}
-  var list=all.filter(function(a){return org||!q||norm(a.name).indexOf(q)>-1}).slice().reverse();
-  if(!list.length){g.innerHTML='<div class="emp"><strong>nada encontrado</strong>nenhuma obra bate com "'+esc($("q").value)+'".</div>';return}
-  list.forEach(function(a){
-    var c=document.createElement("button");c.type="button";c.className="card"+(sel.indexOf(a.id)>-1?" sel":"");c.setAttribute("data-id",a.id);
-    var tag=a.type==="serie"?'<span class="tg">'+(a.watched||[]).length+"/"+(a.seasons||0)+" temp.</span>":(a.type==="filme"?"":'<span class="tg">★ '+fmt(a.rating)+"</span>");
-    c.innerHTML='<span class="cv">'+(a.cover?'<img src="'+a.cover+'" alt="">':T[a.type]?T[a.type].e:"🎬")+(org?"":tag+sob(a.type==="anime"||a.type==="filme"?tip(a,cur.items):null))+(cur.types.length>1?'<span class="ty">'+T[a.type].n+"</span>":"")+'</span><span class="nm">'+esc(a.name)+"</span>";
-    if(org){c.draggable=true;
-      c.ondragstart=function(){drag=a.id};c.ondragover=function(e){e.preventDefault()};
-      c.ondrop=function(e){e.preventDefault();if(drag&&drag!==a.id)dropOn(drag,a.id);drag=null};
-      c.onclick=function(){var i=sel.indexOf(a.id);if(i>-1)sel.splice(i,1);else sel.push(a.id);renderGrid();tbar()}}
-    else c.onclick=function(){openView(a)};
-    g.appendChild(c)});
-}
-function setOrg(v){org=v;$("org").classList.toggle("act",v);$("org-l").textContent=v?"Concluir":"Organizar";$("hint").hidden=!v;$("sb").hidden=v;sel=[];tbar();renderGrid()}
-function tbar(){$("tb").classList.toggle("on",org&&sel.length>0);$("tb-n").textContent=sel.length+(sel.length===1?" selecionado":" selecionados")}
-function dropOn(a,b){var it=cur.items,i=it.findIndex(function(x){return x.id===a}),o=it.splice(i,1)[0],j=it.findIndex(function(x){return x.id===b});it.splice(j<0?it.length:j,0,o);save();renderGrid()}
-function move(dir){
-  if(!sel.length)return;var cols=getComputedStyle($("grid")).gridTemplateColumns.split(" ").length;
-  var disp=function(){return roots(cur).slice().reverse()};
-  var pos=function(id){return disp().findIndex(function(x){return x.id===id})};
-  var order=sel.slice().sort(function(a,b){return(dir==="dn"||dir==="r")?pos(b)-pos(a):pos(a)-pos(b)});
-  var moved=false;
-  order.forEach(function(id){var d=disp(),i=d.findIndex(function(x){return x.id===id});
-    if(dir==="l"&&i%cols===0)return;if(dir==="r"&&(i%cols===cols-1||i===d.length-1))return;
-    var k=i+(dir==="u"?-cols:dir==="dn"?cols:dir==="l"?-1:1);if(k<0||k>=d.length)return;
-    var ra=cur.items.indexOf(d[i]),rb=cur.items.indexOf(d[k]),t=cur.items[ra];cur.items[ra]=cur.items[rb];cur.items[rb]=t;moved=true});
-  if(moved){save();renderGrid()}}
-
-/* ===== modais ===== */
-function openM(h){$("md").innerHTML=h;$("ov").classList.add("on")}
-function closeM(){$("ov").classList.remove("on")}
-$("ov").addEventListener("click",function(e){if(e.target.id==="ov")closeM();var c=e.target.closest("[data-x]");if(c)closeM()});
-document.addEventListener("keydown",function(e){if(e.key==="Escape")closeM()});
-
-function fd(d){return d?d.split("-").reverse().join("/"):""}
-function openView(a){
-  var ch=[],r=a,g=0,p,n;
-  while(r.linkedPrevId&&(p=cur.items.find(function(x){return x.id===r.linkedPrevId}))&&g++<50)r=p;
-  n=r;g=0;while(n&&g++<50){ch.push(n);var m=n;n=cur.items.find(function(x){return x.linkedPrevId===m.id})}
-  var pv=cur.items.find(function(x){return x.id===a.linkedPrevId}),nx=cur.items.find(function(x){return x.linkedPrevId===a.id});
-  var al=(a.type==="anime"||a.type==="filme")?a.seasonAlert:null,R=[["Tipo",T[a.type].n]],add=function(l,v){R.push([l,v!=null&&String(v).trim()?v:""])};
-  if(a.type==="anime"){add("Status",a.dateEnd?"Concluído":a.dateStart?"Assistindo":"");add("Temporada","Temporada "+(a.season||1));add("Áudio",a.language);add("Gênero",(a.genres||[]).join(", "));if(a.hasSpecialEpisode)add("Episódio especial","Sim — "+(a.specialEpisodeCount||"?"))}
-  if(a.type==="manga"){add("Status",a.status);add("Capítulos lidos",a.chapters)}
-  if(a.type==="serie")add("Temporadas","assistidas "+(a.watched||[]).length+" de "+(a.seasons||0));
-  add(a.type==="manga"?"Onde leu":"Onde assistiu",a.place);add("Início",fd(a.dateStart));add("Fim",fd(a.dateEnd));
-  if(a.type==="anime"||a.type==="manga")add("Nota",fmt(a.rating));
-  add("Anotações",a.note);if(pv)add("Temporada anterior",pv.name);if(nx)add("Próxima temporada",nx.name);
-  var h='<div style="text-align:center"><div class="cv" style="width:min(60vw,220px);border-radius:18px;overflow:hidden;margin:0 auto 16px">'+(a.cover?'<img src="'+a.cover+'" alt="">':T[a.type].e)+'</div><h3>'+esc(a.name)+(ch.length>1?" — Temporada "+(a.season||1):"")+"</h3>";
-  if(pv||nx)h+='<div class="seg" style="margin-top:14px">'+(pv?'<button type="button" id="vp">← Diminuir Temporada</button>':"")+(nx?'<button type="button" id="vn">Avançar Temporada →</button>':"")+"</div>";
-  if(a.type==="anime"||a.type==="manga")h+='<p><span class="chip" style="font-size:14px;padding:7px 16px;color:var(--aur);border-color:var(--ls);background:var(--card)">★ '+fmt(a.rating)+"</span></p>";
-  if(al)h+='<div class="al" style="margin-top:6px;text-align:left"><span>'+altxt(al)+'</span><button type="button" class="btn s" id="vr" style="padding:8px 14px">Remover !</button></div>';
-  h+='<button type="button" class="gh" id="vd">detalhes ▾</button></div><div id="vdt" hidden>'+R.map(function(x){return'<div class="rw"><span>'+esc(x[0])+'</span><span'+(x[1]===""?' class="e">não informado':">"+esc(x[1]))+"</span></div>"}).join("")+'</div><div class="ma"><button class="btn s" data-x>Fechar</button><button class="btn p" id="ve">Editar</button></div>';
-  openM(h);
-  $("vd").onclick=function(){var d=$("vdt");d.hidden=!d.hidden;this.textContent=d.hidden?"detalhes ▾":"detalhes ▴"};
-  $("ve").onclick=function(){openForm(a.type,a)};
-  if($("vp"))$("vp").onclick=function(){openView(pv)};if($("vn"))$("vn").onclick=function(){openView(nx)};
-  if($("vr"))$("vr").onclick=function(){var x=a.seasonAlert,w=x.status!=="finished"&&confirm("Essa temporada você já assistiu?\nOK = já assisti (a IA não sugere de novo) · Cancelar = outro motivo");
-    if(w)(a.watchedSeasonsLog=a.watchedSeasonsLog||[]).push({seasonNumber:x.seasonNumber||(a.season||1)+1,dateWatched:new Date().toISOString().slice(0,10)});
-    (a.alertHistory=a.alertHistory||[]).push({status:x.status,seasonNumber:x.seasonNumber,removedAt:Date.now()});a.seasonAlert=null;save();renderGrid();openView(a);toast("Alerta removido.")}
-}
-function genPick(cb){
-  var tmp=genSel.slice(),m=$("md2");
-  m.innerHTML='<h3>Gêneros</h3><p class="mh">toque para marcar quantos quiser, depois confirme.</p><p class="eb" id="gcn" style="margin-bottom:12px"></p><div class="gg">'+GEN.map(function(x){return'<button type="button" data-g="'+esc(x)+'"><span>'+esc(x)+'</span><span></span></button>'}).join("")+'</div><div class="ma"><button type="button" class="btn s" id="gc">Cancelar</button><button type="button" class="btn p" id="gk">Confirmar</button></div>';
-  function ui(){$("gcn").textContent=tmp.length?tmp.length+(tmp.length===1?" selecionado":" selecionados"):"nenhum selecionado";m.querySelectorAll(".gg button").forEach(function(b){var on=tmp.indexOf(b.dataset.g)>-1;b.classList.toggle("on",on);b.lastChild.textContent=on?"✓":""})}
-  m.querySelector(".gg").onclick=function(e){var b=e.target.closest("button");if(!b)return;var i=tmp.indexOf(b.dataset.g);if(i>-1)tmp.splice(i,1);else tmp.push(b.dataset.g);ui()};
-  $("gc").onclick=function(){$("ov2").classList.remove("on")};
-  $("gk").onclick=function(){genSel=tmp.slice();$("ov2").classList.remove("on");cb()};
-  ui();$("ov2").classList.add("on")
-}
-function newTab(){
-  var types=[];
-  openM('<h3>Criar Aba</h3><p class="mh">dê um nome e escolha até 2 tipos de conteúdo.</p><div class="f"><label>Nome</label><input type="text" id="tn" placeholder="ex: Animes"></div><div class="f"><label>Tipo (máx. 2)</label><div class="seg g" id="tt">'+Object.keys(T).map(function(k){return'<button type="button" data-t="'+k+'">'+T[k].e+" "+T[k].n+"</button>"}).join("")+'</div></div><div class="ma"><button class="btn s" data-x>Cancelar</button><button class="btn p" id="tok">Criar</button></div>');
-  $("tt").onclick=function(e){var b=e.target.closest("button");if(!b)return;var t=b.dataset.t,i=types.indexOf(t);
-    if(i>-1){types.splice(i,1);b.classList.remove("on")}else if(types.length>=2){toast("Escolha no máximo dois tipos.")}else{types.push(t);b.classList.add("on")}};
-  $("tok").onclick=function(){var n=$("tn").value.trim();if(!n){$("tn").focus();return}if(!types.length){toast("Escolha pelo menos um tipo.");return}
-    var b={id:uid(),name:n,types:types.slice(),items:[]};S.tabs.push(b);save();closeM();renderTabs();openTab(b.id)}}
-
-function tabSettings(){
-  openM('<h3>Gerenciar aba</h3><p class="mh">renomeie ou exclua esta aba.</p><div class="f"><label>Nome</label><input type="text" id="rn" value="'+esc(cur.name)+'"></div><div class="ma sp"><button class="btn d" id="dt">Excluir aba</button><div style="display:flex;gap:10px"><button class="btn s" data-x>Cancelar</button><button class="btn p" id="rk">Salvar</button></div></div>');
-  $("rk").onclick=function(){var n=$("rn").value.trim();if(!n)return;cur.name=n;save();closeM();$("tab-name").textContent=n;toast("Aba renomeada.")};
-  $("dt").onclick=function(){if(confirm('Excluir a aba "'+cur.name+'" e as '+cur.items.length+" obras dentro dela? Isso não pode ser desfeito. Dica: exporte um backup antes.")){S.tabs=S.tabs.filter(function(b){return b!==cur});save();closeM();renderTabs();show("tabs")}}}
-
-function pickType(){
-  if(cur.types.length===1)return openForm(cur.types[0],null);
-  openM('<h3>Adicionar</h3><p class="mh">o que você quer adicionar?</p><div class="seg" id="pt">'+cur.types.map(function(k){return'<button type="button" data-t="'+k+'">'+T[k].e+" "+T[k].n+"</button>"}).join("")+'</div><div class="ma"><button class="btn s" data-x>Cancelar</button></div>');
-  $("pt").onclick=function(e){var b=e.target.closest("button");if(b)openForm(b.dataset.t,null)}}
-
-function segH(k,opts,val,cls){return'<div class="seg '+(cls||"")+'" data-k="'+k+'">'+opts.map(function(o){return'<button type="button" data-v="'+esc(o)+'" class="'+((Array.isArray(val)?val.indexOf(o)>-1:val===o)?"on":"")+'">'+esc(o)+"</button>"}).join("")+"</div>"}
-function fld(l,h){return'<div class="f"><label>'+l+"</label>"+h+"</div>"}
-
-function openForm(type,it){
-  editing=it;addType=type;cover=it?it.cover||null:null;var v=it||{};
-  var h='<h3>'+(it?"Editar ":"Adicionar ")+T[type].n.toLowerCase()+'</h3><p class="mh">'+(it?"ajuste os detalhes e confirme.":"preencha os detalhes.")+"</p>";
-  if(it&&(type==="anime"||type==="filme")){var x=tip(it,cur.items).seasonAlert;h+='<div class="al"><span>'+(type==="filme"?"Terá continuação? ":"Continuação: ")+altxt(x)+"</span>"+(x?'<button type="button" class="btn s" id="ra" style="padding:8px 14px">Remover !</button>':"")+"</div>"}
-  h+='<form id="fm" novalidate>'+fld("Imagem",'<label class="dz"><i id="pv">'+(cover?'<img src="'+cover+'" alt="">':"🖼")+'</i><span><b style="color:var(--paper)">Escolher imagem</b><br>PNG ou JPG</span><input type="file" id="fc" accept="image/*"></label>');
-  h+=fld("Nome",'<input type="text" data-k="name" value="'+esc(v.name||"")+'" placeholder="ex: Frieren">');
-  if(type==="anime")h+=fld("Temporada",'<input type="number" min="1" data-k="season" id="sn" value="'+(v.season||1)+'">')+'<div id="lk"></div>'+fld("Dublado ou legendado",segH("language",["Dublado","Legendado"],v.language||"Legendado"))+fld("Gênero",'<button type="button" class="gp" id="gb"></button>');
-  if(type==="manga")h+=fld("Status",segH("status",["Lendo","Concluído"],v.status||"Lendo"))+fld("Capítulos lidos",'<input type="number" min="0" data-k="chapters" value="'+(v.chapters!=null?v.chapters:"")+'" placeholder="ex: 120">');
-  if(type==="serie")h+=fld("Quantidade de temporadas",'<input type="number" min="1" id="ns" value="'+(v.seasons||1)+'">')+fld("Temporadas assistidas (toque para marcar)",'<div class="seg g w" id="sw"></div>');
-  h+=fld(type==="manga"?"Onde leu?":"Onde assistiu?",'<input type="text" data-k="place" value="'+esc(v.place||"")+'" placeholder="ex: '+(type==="manga"?"MangaPlus":"Crunchyroll, Netflix...")+'">');
-  if(type==="anime"||type==="manga")h+=fld("Nota",'<div class="rg"><input type="range" min="0" max="10" step="0.5" data-k="rating" value="'+(v.rating!=null?v.rating:8)+'"><b id="rv">'+fmt(v.rating!=null?v.rating:8)+"</b></div>");
-  h+='<div class="ma'+(it?" sp":"")+'">'+(it?'<button type="button" class="btn d" id="del">Excluir</button>':"")+'<div style="display:flex;gap:10px"><button type="button" class="btn s" data-x>Cancelar</button><button type="submit" class="btn p">Confirmar</button></div></div></form>';
-  openM(h);
-  var md=$("md");
-  md.querySelectorAll(".seg[data-k]").forEach(function(s){s.onclick=function(e){var b=e.target.closest("button");if(!b)return;if(s.dataset.k==="genres")b.classList.toggle("on");else{s.querySelectorAll("button").forEach(function(x){x.classList.remove("on")});b.classList.add("on")}}});
-  var r=md.querySelector('input[type=range]');if(r)r.oninput=function(){$("rv").textContent=fmt(r.value)};
-  $("fc").onchange=function(){var f=this.files[0];if(!f)return;resize(f,480).then(function(u){cover=u;$("pv").innerHTML='<img src="'+u+'" alt="">'}).catch(function(){toast("Não foi possível carregar essa imagem.")})};
-  var watched=(v.watched||[]).slice();
-  function sw(){var n=Math.max(1,parseInt($("ns").value,10)||1),w=$("sw");w.innerHTML="";watched=watched.filter(function(x){return x<=n});
-    for(var i=1;i<=n;i++)(function(i){var b=document.createElement("button");b.type="button";b.textContent="T"+i;if(watched.indexOf(i)>-1)b.className="on";
-      b.onclick=function(){var k=watched.indexOf(i);if(k>-1)watched.splice(k,1);else watched.push(i);b.classList.toggle("on")};w.appendChild(b)})(i)}
-  if(type==="serie"){$("ns").oninput=sw;sw()}
-  if(type==="anime"){
-    genSel=(v.genres||[]).slice();linkId=v.linkedPrevId||null;
-    var gl=function(){var b=$("gb");b.className="gp"+(genSel.length?" has":"");b.innerHTML="<span>"+(genSel.length?esc(genSel.join(", ")):"Escolher gêneros")+"</span>›"};gl();
-    $("gb").onclick=function(){genPick(gl)};
-    var shown=false;
-    var lk=function(){
-      if((parseInt($("sn").value,10)||1)<2){$("lk").innerHTML="";shown=false;linkId=null;return}
-      if(shown)return;shown=true;
-      $("lk").innerHTML=fld("Juntar com a temporada",'<div class="seg"><button type="button" id="ln">Não</button><button type="button" id="ls">Sim</button></div><p class="mh" id="lh" style="margin:12px 0 8px" hidden>qual foi a temporada antiga?</p><div class="sg" id="lgr" hidden></div>');
-      var gr=function(){var b=$("lgr");b.innerHTML="";var pool=cur.items.filter(function(x){return x.type==="anime"&&(!it||x.id!==it.id)}).reverse();
-        if(!pool.length)b.innerHTML='<p class="mh">nenhum outro anime na aba ainda.</p>';
-        pool.forEach(function(x){var c=document.createElement("button");c.type="button";c.className="card sc"+(x.id===linkId?" on":"");c.innerHTML='<span class="cv">'+(x.cover?'<img src="'+x.cover+'" alt="">':"🎬")+'</span><span class="n">'+esc(x.name)+"</span>";c.onclick=function(){linkId=x.id;gr()};b.appendChild(c)})};
-      var st=function(y){$("ln").classList.toggle("on",!y);$("ls").classList.toggle("on",y);$("lgr").hidden=!y;$("lh").hidden=!y;if(y)gr();else linkId=null};
-      $("ln").onclick=function(){st(false)};$("ls").onclick=function(){st(true)};st(!!linkId)};
-    $("sn").oninput=lk;lk()}
-  if($("ra"))$("ra").onclick=function(){var t=tip(it,cur.items),x=t.seasonAlert;if(!x)return;
-    var w=x.status!=="finished"&&confirm("Essa temporada você já assistiu?\nOK = já assisti (a IA não sugere de novo) · Cancelar = outro motivo");
-    if(w){(t.watchedSeasonsLog=t.watchedSeasonsLog||[]).push({seasonNumber:x.seasonNumber||(t.season||1)+1,dateWatched:new Date().toISOString().slice(0,10)})}
-    (t.alertHistory=t.alertHistory||[]).push({status:x.status,seasonNumber:x.seasonNumber,removedAt:Date.now()});t.seasonAlert=null;save();closeM();renderGrid();toast("Alerta removido.")};
-  if($("del"))$("del").onclick=function(){if(confirm('Excluir "'+it.name+'"? Isso não pode ser desfeito.')){cur.items=cur.items.filter(function(a){return a.id!==it.id});cur.items.forEach(function(a){if(a.linkedPrevId===it.id)a.linkedPrevId=null});save();closeM();renderGrid();toast("Obra excluída.")}};
-  $("fm").onsubmit=function(e){e.preventDefault();
-    var o=it||{id:uid(),type:type,createdAt:Date.now(),seasonAlert:null,alertHistory:[],watchedSeasonsLog:[]};
-    var nm=md.querySelector('[data-k=name]').value.trim();if(!nm){md.querySelector('[data-k=name]').focus();return}
-    o.name=nm;o.cover=cover;
-    md.querySelectorAll("[data-k]").forEach(function(el){var k=el.dataset.k;if(k==="name")return;
-      if(el.classList.contains("seg")){var on=[].slice.call(el.querySelectorAll("button.on")).map(function(b){return b.dataset.v});o[k]=k==="genres"?on:on[0]}
-      else if(el.type==="range")o[k]=Number(el.value);
-      else if(el.type==="number")o[k]=el.value===""?null:Number(el.value);
-      else o[k]=el.value.trim()});
-    if(type==="anime"){o.genres=genSel.slice();o.season=parseInt($("sn").value,10)||1;o.linkedPrevId=o.season>1?linkId:null}
-    if(type==="serie"){o.seasons=Math.max(1,parseInt($("ns").value,10)||1);o.watched=watched.sort(function(a,b){return a-b})}
-    if(!it)cur.items.push(o);save();closeM();renderGrid();toast(it?"Alterações salvas.":"Adicionado.")}
-}
-function resize(f,mw){return new Promise(function(ok,no){var r=new FileReader();r.onerror=no;r.onload=function(){var i=new Image();i.onerror=no;i.onload=function(){var s=Math.min(1,mw/i.width),c=document.createElement("canvas");c.width=Math.round(i.width*s);c.height=Math.round(i.height*s);c.getContext("2d").drawImage(i,0,0,c.width,c.height);ok(c.toDataURL("image/jpeg",.82))};i.src=r.result};r.readAsDataURL(f)})}
-
-/* ===== backup e IA ===== */
-function dl(o,n){var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(o,null,2)],{type:"application/json"}));a.download=n;document.body.appendChild(a);a.click();a.remove()}
-function stamp(){var d=new Date();return d.getFullYear()+("0"+(d.getMonth()+1)).slice(-2)+("0"+d.getDate()).slice(-2)}
-function importBackup(txt){
-  var d;try{d=JSON.parse(txt)}catch(e){return toast("Arquivo inválido.")}
-  var inc=null;
-  if(d&&Array.isArray(d.tabs))inc=d.tabs;
-  else{var l=Array.isArray(d)?d:(d&&Array.isArray(d.animes)?d.animes:null);if(l){l.forEach(function(a){a.type="anime";if(!a.id)a.id=uid()});inc=[{id:uid(),name:"Animes",types:["anime"],items:l}]}}
-  if(!inc)return toast("Não parece um backup do yozora.");
-  var n=inc.reduce(function(s,b){return s+(b.items||[]).length},0);
-  var mode=S.tabs.length?(confirm("Importar "+n+" obras.\nOK = MESCLAR com o que você já tem (nada é apagado)\nCancelar = não importar")?"merge":null):"merge";
-  if(!mode)return;
-  inc.forEach(function(b){var ex=S.tabs.find(function(x){return x.id===b.id});
-    if(!ex)S.tabs.push(b);else{var ids={};ex.items.forEach(function(a){ids[a.id]=1});(b.items||[]).forEach(function(a){if(!ids[a.id])ex.items.push(a)})}});
-  locked=false;save();renderTabs();toast("Backup importado: "+n+" obras.")}
-
-function aiPanel(){
-  openM('<h3>Análise por IA</h3><p class="mh">gere um arquivo para uma IA pesquisar continuações e importe o que ela devolver.</p><div class="ma" style="flex-direction:column"><button class="btn p" id="ae" style="justify-content:center">✨ Preparar backup para IA</button><button class="btn s" id="ai-i" style="justify-content:center">Importar backup analisado</button><input type="file" id="f-ai" accept=".json,application/json" hidden><button class="btn s" data-x style="justify-content:center">Fechar</button></div>');
-  $("ae").onclick=function(){
-    var items=cur.items.filter(function(a){return a.type==="anime"||a.type==="filme"}).map(function(a){
-      return{id:a.id,name:a.name,type:a.type,currentSeason:a.season||1,existingSeasons:chain(a),watchedSeasonsLog:a.watchedSeasonsLog||[],currentAlert:a.seasonAlert||null}});
-    if(!items.length)return toast("Essa aba ainda não tem animes ou filmes.");
-    var ins="Você está analisando um backup do app yozora. Para CADA obra, sem pular nenhuma, responda: (1) existe uma continuação/temporada anunciada que ainda não está em existingSeasons nem em watchedSeasonsLog? (2) se currentAlert for red ou yellow, essa continuação já foi lançada? (3) a obra está oficialmente finalizada, sem continuação prevista? Obras clássicas bem conhecidas contam pelo consenso público. Para filmes: finished = não terá continuação. Quando houver resposta, adicione em cada obra o campo proposedAlert: {\"status\":\"red\"|\"yellow\"|\"green\"|\"finished\",\"seasonNumber\":<número ou null>,\"releaseDate\":\"AAAA-MM-DD\" ou null,\"note\":\"<explicação curta e fonte>\"}. red = confirmada sem data; yellow = confirmada com data futura; green = nova temporada lançada neste ano; finished = obra finalizada. Regras: NÃO altere ids, NÃO remova nem adicione obras, NÃO altere nenhum outro campo, NÃO invente sem evidência (exceto consenso público para finished), respeite watchedSeasonsLog. Devolva o MESMO arquivo JSON com proposedAlert incluído.";
-    dl({app:"yozora",type:"ai_season_analysis_request",current_date:new Date().toISOString().slice(0,10),instructions:ins,animes:items},"yozora-para-ia-"+stamp()+".json");closeM();toast("Arquivo pronto — envie para a IA.")};
-  $("ai-i").onclick=function(){$("f-ai").click()};
-  $("f-ai").onchange=function(){var f=this.files[0];this.value="";if(!f)return;var r=new FileReader();r.onload=function(){applyAi(r.result)};r.readAsText(f)}}
-function chain(a){var r=a,g=0,p;while(r.linkedPrevId&&(p=cur.items.find(function(x){return x.id===r.linkedPrevId}))&&g++<50)r=p;var out=[],n=r;g=0;while(n&&g++<50){out.push(n.season||1);n=cur.items.find(function(x){return x.linkedPrevId===n.id})}return out}
-function applyAi(txt){
-  var d;try{d=JSON.parse(txt)}catch(e){return toast("Arquivo inválido.")}
-  var l=Array.isArray(d.animes)?d.animes:(Array.isArray(d)?d:null);if(!l)return toast("Não parece um backup analisado.");
-  var by={};l.forEach(function(e){if(e&&e.id)by[e.id]=e});var diffs=[];
-  S.tabs.forEach(function(b){b.items.forEach(function(a){var e=by[a.id],p=e&&(e.proposedAlert||e.seasonAlert||e.alert);
-    if(!p||["red","yellow","green","finished"].indexOf(p.status)<0)return;
-    var sn=parseInt(p.seasonNumber,10)||(a.season||1)+1,mw=(a.watchedSeasonsLog||[]).reduce(function(m,w){return Math.max(m,w.seasonNumber||0)},0);
-    if(p.status!=="finished"&&sn<=mw)return;
-    var rd=/^\d{4}-\d{2}-\d{2}$/.test(p.releaseDate||"")?p.releaseDate:null,o=a.seasonAlert;
-    if(o&&o.status===p.status&&o.seasonNumber===sn&&o.releaseDate===rd)return;
-    diffs.push({a:a,n:{status:p.status,seasonNumber:sn,releaseDate:rd,note:String(p.note||"").slice(0,300),foundAt:Date.now()}})})});
-  if(!diffs.length)return toast("Nenhuma novidade para aplicar.");
-  if(!confirm(diffs.length+" alerta(s) sugerido(s) pela IA:\n\n"+diffs.slice(0,15).map(function(x){return"• "+x.a.name+" — "+altxt(x.n)}).join("\n")+(diffs.length>15?"\n…":"")+"\n\nAplicar? Nada mais é alterado."))return;
-  diffs.forEach(function(x){x.a.seasonAlert=x.n});save();closeM();renderGrid();toast("Alertas atualizados.")}
-
-/* ===== eventos ===== */
-$("go").onclick=function(){renderTabs();show("tabs")};
-$("t-back").onclick=function(){show("land")};
-$("tab-back").onclick=function(){setOrg(false);renderTabs();show("tabs")};
-$("new-tab").onclick=newTab;$("tab-set").onclick=tabSettings;$("add").onclick=pickType;$("ai").onclick=aiPanel;
-$("org").onclick=function(){if(!org&&!roots(cur).length)return toast("Ainda não há obras para organizar.");setOrg(!org)};
-$("q").oninput=renderGrid;
-["u","l","dn","r"].forEach(function(k){$(k).onclick=function(){move(k)}});
-$("tb-c").onclick=function(){sel=[];tbar();renderGrid()};
-$("bk-out").onclick=function(){if(!S.tabs.length)return toast("Nada para exportar ainda.");dl({app:"yozora",schema:2,exportedAt:new Date().toISOString(),tabs:S.tabs},"yozora-backup-"+stamp()+".json");toast("Backup exportado.")};
-$("bk-in").onclick=function(){$("f-bk").click()};
-$("f-bk").onchange=function(){var f=this.files[0];this.value="";if(!f)return;var r=new FileReader();r.onload=function(){importBackup(r.result)};r.readAsText(f)};
-window.addEventListener("resize",function(){if(org)renderGrid()});
-
-/* ===== fundo ===== */
-(function(){var h=$("sky"),c=["#ff8fb1","#8de8d0","#b79bff"],i,e;for(i=0;i<3;i++){e=document.createElement("div");e.className="gl";var z=240+Math.random()*200;e.style.cssText="width:"+z+"px;height:"+z+"px;left:"+Math.random()*100+"%;top:"+Math.random()*100+"%;background:"+c[i];h.appendChild(e)}
-for(i=0;i<60;i++){e=document.createElement("div");e.className="st";var s=1.5+Math.random()*2;e.style.cssText="width:"+s+"px;height:"+s+"px;left:"+Math.random()*100+"%;top:"+Math.random()*100+"%;animation-delay:"+-Math.random()*5+"s;animation-duration:"+(2+Math.random()*3)+"s";h.appendChild(e)}})();
-
-(function(){var h=$("sky"),R=Math.random,i;
-  function mk(c,css){var x=document.createElement("div");x.className=c;x.style.cssText=css;h.appendChild(x);return x}
-  mk("mn","");
-  for(i=0;i<2;i++)mk("au","top:"+(15+i*35)+"%;animation-delay:"+(-i*7)+"s;animation-duration:"+(16+i*6)+"s");
-  for(i=0;i<14;i++)mk("pt","left:"+R()*100+"%;--dx:"+(R()*160-60)+"px;width:"+(7+R()*6)+"px;height:"+(10+R()*7)+"px;animation-duration:"+(11+R()*10)+"s;animation-delay:"+(-R()*20)+"s");
-  for(i=0;i<16;i++){var z=3+R()*4;mk("ff","left:"+R()*100+"%;--dx:"+(R()*80-40)+"px;width:"+z+"px;height:"+z+"px;animation-duration:"+(14+R()*14)+"s;animation-delay:"+(-R()*20)+"s")}
-  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
-  function shoot(){var x=mk("sh","left:"+R()*60+"%;top:"+R()*40+"%");setTimeout(function(){x.remove()},1500);setTimeout(shoot,3500+R()*5000)}
-  setTimeout(shoot,1800)})();
-load();recalc();
-})();
+setInterval(tick,1000);tick();
+function drawTimer(){$('timer').textContent=String(Math.floor(remaining/60)).padStart(2,'0')+':'+String(remaining%60).padStart(2,'0')}
+function startTimer(){if(timerInterval)return;const endAt=Date.now()+remaining*1000;timerInterval=setInterval(()=>{remaining=Math.max(0,Math.ceil((endAt-Date.now())/1000));drawTimer();if(!remaining){clearInterval(timerInterval);timerInterval=null;alert('Tempo encerrado!')}},250)}
+function pauseTimer(){clearInterval(timerInterval);timerInterval=null}
+function resetTimer(){pauseTimer();remaining=Math.max(1,Number($('minutes').value||5))*60;drawTimer()}
+$('minutes').onchange=resetTimer;
 </script>
 </body>
 </html>

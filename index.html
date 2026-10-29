@@ -1,141 +1,178 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sky — Horários de Aula</title>
+<title>SkyPulse | Market Radar</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#080d19;color:#eef4ff;font-family:Arial,sans-serif}
-header{padding:22px;background:#101a2c;border-bottom:1px solid #263955;display:flex;justify-content:space-between;align-items:center}
-h1{font-size:25px;margin:0;color:#75aaff}
-header p{margin:5px 0 0;color:#9aaaca;font-size:12px}
-main{max-width:950px;margin:30px auto;padding:0 16px}
-h2{font-size:19px}
-.card{background:#101a2c;border:1px solid #263955;border-radius:16px;padding:20px;margin-bottom:18px}
-button{background:#4388ff;color:white;border:0;padding:12px 16px;border-radius:10px;cursor:pointer;font-weight:bold}
-button:hover{background:#306bd0}
-input,select{background:#080f1d;color:white;border:1px solid #344867;border-radius:9px;padding:12px;width:100%;margin:5px 0 12px}
-label{font-size:13px;color:#b9c9e2}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.lesson{padding:13px;background:#0a1424;border:1px solid #263955;border-radius:12px;margin-top:10px;display:flex;justify-content:space-between;gap:12px}
-.muted{color:#9aaaca;font-size:13px}
-.highlight{color:#65b5ff}
-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
-nav button{background:#192945}
-nav button.active{background:#4388ff}
-.hidden{display:none}
-footer{text-align:center;color:#7183a2;padding:30px;font-size:12px}
-@media(max-width:600px){.grid{grid-template-columns:1fr}header{padding:16px}h1{font-size:20px}}
+:root{--bg:#080b14;--panel:#111a2c;--border:#25314a;--text:#edf2ff;--muted:#8997b5;--blue:#7191ff;--cyan:#59e5d2}
+body{margin:0;background:radial-gradient(ellipse at top right,#192b55,transparent 45%),var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;min-height:100vh}
+main{max-width:1100px;margin:auto;padding:28px 20px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:55px}
+.brand{font-size:21px;font-weight:800;letter-spacing:-.6px}
+.logo{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:13px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#07101b;margin-right:10px}
+.status{font-size:12px;color:var(--muted);border:1px solid var(--border);border-radius:30px;padding:9px 12px}
+.hero{margin-bottom:35px}
+.tag{color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:3px}
+h1{font-size:clamp(36px,7vw,65px);letter-spacing:-3px;line-height:1.05;margin:14px 0}
+h1 span{background:linear-gradient(90deg,#dce5ff,#7191ff,#59e5d2);color:transparent;background-clip:text}
+p{color:var(--muted);line-height:1.7}
+.hero p{max-width:600px}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}
+.toolbar h2{font-size:13px;letter-spacing:1px}
+button{border:0;border-radius:11px;background:linear-gradient(135deg,#7191ff,#536ce0);padding:12px 16px;color:white;font-weight:700;cursor:pointer}
+button:disabled{opacity:.6}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.card,.panel{border:1px solid var(--border);border-radius:20px;padding:22px;background:linear-gradient(145deg,#152039eF,#0e1424f2);box-shadow:0 15px 45px #0002}
+.card{min-height:160px}
+.label{font-size:12px;color:var(--muted);letter-spacing:1px}
+.icon{float:right;font-size:22px;color:var(--cyan)}
+.value{font-size:clamp(25px,3vw,34px);font-weight:800;margin:23px 0 7px;overflow-wrap:anywhere}
+.sub{font-size:12px;color:var(--muted)}
+.lower{display:grid;grid-template-columns:1.3fr .7fr;gap:15px;margin-top:15px}
+.panel h3{font-size:15px;margin-top:0}
+.currencies{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:20px}
+.currency{padding:12px;border:1px solid var(--border);border-radius:12px;background:#ffffff05}
+.currency b{display:block;font-size:13px;margin-bottom:7px}
+.currency span{font-size:13px;color:var(--cyan);overflow-wrap:anywhere}
+.note{font-size:12px;margin-top:20px}
+#error{display:none;border:1px solid #a96b48;background:#3a241d;padding:13px;border-radius:12px;color:#ffd1ae;margin-bottom:15px;overflow-wrap:anywhere}
+footer{display:flex;justify-content:space-between;gap:10px;margin-top:25px;color:#64718d;font-size:11px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.lower{grid-template-columns:1fr}.currencies{grid-template-columns:repeat(2,1fr)}header{margin-bottom:35px}.toolbar{align-items:flex-start}.value{font-size:30px}}
 </style>
 </head>
 <body>
-<header>
-<div><h1>✦ Sky Horários</h1><p>ORGANIZAÇÃO ESCOLAR</p></div>
-<div style="text-align:right"><strong id="clock">00:00:00</strong><p id="date"></p></div>
-</header>
 <main>
-<h2 id="greeting">Olá! 👋</h2>
-<p class="muted">Organize suas aulas e acompanhe seus horários.</p>
-<nav>
-<button class="active" onclick="show('home',this)">Visão geral</button>
-<button onclick="show('schedule',this)">Grade semanal</button>
-<button onclick="show('extras',this)">Funções extras</button>
-</nav>
-<section id="home">
-<div class="card">
-<h2>🔵 Aula no momento</h2>
-<div id="current"><p class="muted">Nenhuma aula cadastrada.</p></div>
-</div>
-<div class="card">
-<h2>➡️ Próxima aula</h2>
-<div id="next"><p class="muted">Cadastre suas aulas para começar.</p></div>
-</div>
-<div class="card">
-<h2>📅 Aulas de hoje</h2>
-<div id="today"></div>
-</div>
+<header>
+  <div class="brand"><span class="logo">✦</span>SkyPulse <span style="color:#8292b4;font-weight:400">/ RADAR</span></div>
+  <div class="status" id="status">● Aguardando API</div>
+</header>
+
+<section class="hero">
+  <div class="tag">MARKET INTELLIGENCE · LIVE DATA</div>
+  <h1>O mundo em<br><span>movimento.</span></h1>
+  <p>Seu radar financeiro futurista. Acompanhe metais preciosos e moedas internacionais em uma interface simples e moderna.</p>
 </section>
-<section id="schedule" class="hidden">
-<div class="card">
-<h2>Adicionar aula</h2>
-<form id="lessonForm">
-<div class="grid">
-<div><label>Dia da semana</label><select id="day"><option value="1">Segunda-feira</option><option value="2">Terça-feira</option><option value="3">Quarta-feira</option><option value="4">Quinta-feira</option><option value="5">Sexta-feira</option><option value="6">Sábado</option><option value="0">Domingo</option></select></div>
-<div><label>Disciplina</label><input id="subject" placeholder="Ex.: Matemática" required></div>
-<div><label>Horário de início</label><input id="start" type="time" value="07:00" required></div>
-<div><label>Horário de término</label><input id="end" type="time" value="07:50" required></div>
-<div><label>Série e turma</label><input id="classroom" placeholder="Ex.: 9º C" required></div>
-<div><label>Sala</label><input id="room" placeholder="Ex.: 01" required></div>
-<div><label>Utiliza plataforma?</label><select id="usePlatform"><option value="no">Não</option><option value="yes">Sim</option></select></div>
-<div id="platformBox" class="hidden"><label>Número da plataforma</label><input id="platform" placeholder="Ex.: 03"></div>
+
+<div class="toolbar">
+  <h2>VISÃO GERAL DO MERCADO</h2>
+  <button id="refresh">↻ Atualizar</button>
 </div>
-<p><label><input id="recurring" type="checkbox" checked style="width:auto"> Repetir toda semana</label></p>
-<button type="submit">+ Salvar aula</button>
-</form>
-</div>
-<div class="card">
-<h2>Minha grade</h2>
-<div id="scheduleList"></div>
-</div>
+
+<div id="error"></div>
+
+<section class="grid">
+  <article class="card">
+    <span class="icon">◈</span><div class="label">OURO · XAU</div>
+    <div class="value" id="gold">US$ —</div><div class="sub">Preço por onça troy</div>
+  </article>
+  <article class="card">
+    <span class="icon">✧</span><div class="label">PRATA · XAG</div>
+    <div class="value" id="silver">US$ —</div><div class="sub">Preço por onça troy</div>
+  </article>
+  <article class="card">
+    <span class="icon">⬡</span><div class="label">PLATINA · XPT</div>
+    <div class="value" id="platinum">US$ —</div><div class="sub">Preço por onça troy</div>
+  </article>
 </section>
-<section id="extras" class="hidden">
-<div class="card">
-<h2>⏱ Temporizador</h2>
-<label>Tempo em minutos</label><input id="minutes" type="number" min="1" value="5">
-<h2 id="timer">05:00</h2>
-<button onclick="startTimer()">Iniciar</button>
-<button onclick="pauseTimer()">Pausar</button>
-<button onclick="resetTimer()">Reiniciar</button>
-</div>
-<div class="card">
-<h2>💡 Sugestões</h2>
-<p class="muted">Tem uma ideia para melhorar o aplicativo? Envie sua sugestão.</p>
-<a href="https://forms.gle/pQYmsRHayQn6UW2q7" target="_blank" rel="noopener"><button>Enviar sugestão ↗</button></a>
-</div>
+
+<section class="lower">
+  <div class="panel">
+    <h3>Radar de moedas</h3>
+    <p>Taxas de câmbio disponibilizadas pela API.</p>
+    <div class="currencies" id="currencies">
+      <div class="currency"><b>EUR</b><span>—</span></div>
+      <div class="currency"><b>GBP</b><span>—</span></div>
+      <div class="currency"><b>JPY</b><span>—</span></div>
+      <div class="currency"><b>BRL</b><span>—</span></div>
+    </div>
+  </div>
+  <div class="panel">
+    <h3>Sobre o radar</h3>
+    <p>Os valores dependem da disponibilidade e das condições da API.</p>
+    <p class="note">✦ Painel informativo. Não constitui recomendação de investimento.</p>
+    <p class="note"><a href="https://thetickbase.com/docs/" target="_blank" rel="noreferrer" style="color:#8ca8ff">Documentação da API ↗</a></p>
+  </div>
 </section>
+
+<footer><span>SKYPULSE RADAR · DEMO</span><span id="updated">Nenhuma consulta realizada</span></footer>
 </main>
-<footer>Sky Horários · Projeto de demonstração</footer>
+
 <script>
-const names=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
-let lessons=[];
-try{lessons=JSON.parse(localStorage.getItem('skyLessons')||'[]')}catch(e){}
-let timerInterval=null,remaining=300;
-const $=id=>document.getElementById(id);
-function save(){localStorage.setItem('skyLessons',JSON.stringify(lessons));render()}
-function show(id,btn){document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));$(id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render()}
-function safe(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-$('usePlatform').onchange=()=> $('platformBox').classList.toggle('hidden',$('usePlatform').value!=='yes');
-$('lessonForm').onsubmit=e=>{
-e.preventDefault();
-const x={id:Date.now().toString(),day:Number($('day').value),subject:$('subject').value.trim(),start:$('start').value,end:$('end').value,classroom:$('classroom').value.trim(),room:$('room').value.trim(),platform:$('usePlatform').value==='yes'?$('platform').value.trim():'',recurring:$('recurring').checked};
-if(x.end<=x.start){alert('O término deve ser depois do início.');return}
-lessons.push(x);save();e.target.reset();$('platformBox').classList.add('hidden');$('start').value='07:00';$('end').value='07:50';$('recurring').checked=true;alert('Aula salva com sucesso!');
-};
-function removeLesson(id){if(confirm('Deseja excluir esta aula?')){lessons=lessons.filter(x=>x.id!==id);save()}}
-function render(){
-const now=new Date(),day=now.getDay(),time=now.toTimeString().slice(0,5);
-const list=lessons.filter(x=>Number(x.day)===day).sort((a,b)=>a.start.localeCompare(b.start));
-const current=list.find(x=>x.start<=time&&x.end>time),next=list.find(x=>x.start>time);
-function detail(x){return '<strong>'+safe(x.subject)+'</strong><br><span class="muted">'+safe(x.classroom)+' · Sala '+safe(x.room)+(x.platform?' · Plataforma '+safe(x.platform):'')+'</span><br><span class="highlight">'+safe(x.start)+' – '+safe(x.end)+'</span>'}
-$('current').innerHTML=current?detail(current):'<p class="muted">Nenhuma aula neste horário.</p>';
-$('next').innerHTML=next?detail(next):'<p class="muted">Não há próxima aula cadastrada para hoje.</p>';
-$('today').innerHTML=list.length?list.map(x=>'<div class="lesson"><div>'+detail(x)+'</div></div>').join(''):'<p class="muted">Dia livre! Nenhuma aula cadastrada.</p>';
-$('scheduleList').innerHTML=lessons.length?lessons.slice().sort((a,b)=>a.day-b.day||a.start.localeCompare(b.start)).map(x=>'<div class="lesson"><div><strong>'+safe(names[x.day])+' · '+safe(x.subject)+'</strong><br><span class="muted">'+safe(x.classroom)+' · Sala '+safe(x.room)+'</span><br><span class="highlight">'+safe(x.start)+' – '+safe(x.end)+'</span>'+(x.recurring?'<br><span class="muted">Repetição semanal</span>':'<br><span class="muted">Recorrência desativada no protótipo</span>')+'</div><button onclick="removeLesson(\''+x.id+'\')">Excluir</button></div>').join(''):'<p class="muted">Você ainda não cadastrou aulas.</p>';
+// ATENÇÃO: uma chave colocada aqui ficará visível para quem abrir o HTML.
+// Para um site público, use um servidor para guardar a chave.
+const API_KEY = "";
+const API_BASE = "https://api.thetickbase.com/v1";
+
+const $ = id => document.getElementById(id);
+const formatUSD = value => new Intl.NumberFormat("en-US", {
+  style:"currency", currency:"USD", maximumFractionDigits:2
+}).format(Number(value));
+
+async function requestAPI(endpoint) {
+  const response = await fetch(API_BASE + endpoint, {
+    headers: { "Authorization": "Bearer " + API_KEY }
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data?.error?.message || "Erro HTTP " + response.status);
+  }
+  return data;
 }
-function tick(){
-const d=new Date();
-$('clock').textContent=[d.getHours(),d.getMinutes(),d.getSeconds()].map(n=>String(n).padStart(2,'0')).join(':');
-$('date').textContent=d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'});
-$('greeting').textContent=(d.getHours()<12?'Bom dia':d.getHours()<18?'Boa tarde':'Boa noite')+'! 👋';
-render();
+
+async function atualizar() {
+  const button = $("refresh");
+  button.disabled = true;
+  button.textContent = "Consultando...";
+  $("error").style.display = "none";
+  $("status").textContent = "● Consultando API";
+
+  try {
+    if (!API_KEY.trim()) {
+      throw new Error("Insira sua chave em API_KEY no código. Atenção: não publique o HTML com a chave dentro dele.");
+    }
+
+    const [gold, silver, platinum, fx] = await Promise.all([
+      requestAPI("/metals/latest?metal=XAU"),
+      requestAPI("/metals/latest?metal=XAG"),
+      requestAPI("/metals/latest?metal=XPT"),
+      requestAPI("/fx/latest?symbols=EUR,GBP,JPY,BRL")
+    ]);
+
+    $("gold").textContent = formatUSD(gold.price);
+    $("silver").textContent = formatUSD(silver.price);
+    $("platinum").textContent = formatUSD(platinum.price);
+
+    const rates = fx.rates || {};
+    const names = {
+      EUR:"Euro", GBP:"Libra esterlina",
+      JPY:"Iene japonês", BRL:"Real brasileiro"
+    };
+
+    $("currencies").innerHTML = Object.entries(names).map(([code,name]) => {
+      const value = rates[code] !== undefined
+        ? Number(rates[code]).toLocaleString("pt-BR",{maximumFractionDigits:5})
+        : "Indisponível";
+      return `<div class="currency"><b>${code}</b><span>${value}</span><div class="sub">${name}</div></div>`;
+    }).join("");
+
+    $("status").textContent = "● API consultada";
+    $("updated").textContent = "Atualizado às " +
+      new Date().toLocaleTimeString("pt-BR");
+  } catch (error) {
+    $("error").textContent = "Não foi possível carregar os dados: " + error.message +
+      " Confira a chave, os endpoints e se a API permite CORS.";
+    $("error").style.display = "block";
+    $("status").textContent = "● Verifique a conexão";
+  } finally {
+    button.disabled = false;
+    button.textContent = "↻ Atualizar";
+  }
 }
-setInterval(tick,1000);tick();
-function drawTimer(){$('timer').textContent=String(Math.floor(remaining/60)).padStart(2,'0')+':'+String(remaining%60).padStart(2,'0')}
-function startTimer(){if(timerInterval)return;const endAt=Date.now()+remaining*1000;timerInterval=setInterval(()=>{remaining=Math.max(0,Math.ceil((endAt-Date.now())/1000));drawTimer();if(!remaining){clearInterval(timerInterval);timerInterval=null;alert('Tempo encerrado!')}},250)}
-function pauseTimer(){clearInterval(timerInterval);timerInterval=null}
-function resetTimer(){pauseTimer();remaining=Math.max(1,Number($('minutes').value||5))*60;drawTimer()}
-$('minutes').onchange=resetTimer;
+
+$("refresh").addEventListener("click", atualizar);
 </script>
 </body>
 </html>

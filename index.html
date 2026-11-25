@@ -1,231 +1,162 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sky Donate Control</title>
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aviso</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      background: radial-gradient(ellipse at center, #14142a 0%, #05050c 70%);
+      overflow: hidden;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    }
+    body { display: flex; align-items: center; justify-content: center; }
 
-body {
-    min-height: 100vh;
-    background: #070b14;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
+    canvas#particles {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
 
-.container {
-    width: 100%;
-    max-width: 440px;
-    background: #101827;
-    border: 1px solid #24334b;
-    border-radius: 22px;
-    padding: 30px;
-    box-shadow: 0 20px 70px #0008;
-}
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.03) 0px,
+        rgba(255, 255, 255, 0.03) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+      animation: scan 8s linear infinite;
+    }
+    @keyframes scan {
+      from { background-position: 0 0; }
+      to { background-position: 0 100px; }
+    }
 
-.logo {
-    color: #3997ff;
-    font-size: 14px;
-    font-weight: bold;
-    letter-spacing: 3px;
-    margin-bottom: 30px;
-}
+    .wrap {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.05em;
+      padding: 1.5rem;
+      max-width: 95vw;
+    }
 
-h1 {
-    font-size: 27px;
-    margin-bottom: 8px;
-}
+    .char {
+      display: inline-block;
+      font-size: clamp(1.3rem, 5vw, 3.8rem);
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      white-space: pre;
+      opacity: 0;
+      transform: translateY(-40px) scale(0.5);
+      animation: drop 0.6s cubic-bezier(0.2, 1.4, 0.4, 1) forwards;
+      will-change: transform, color, text-shadow;
+    }
+    @keyframes drop {
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
 
-.subtitle {
-    color: #8291a8;
-    font-size: 14px;
-    margin-bottom: 30px;
-}
-
-.status-card {
-    background: #172438;
-    border: 1px solid #293d58;
-    border-radius: 15px;
-    padding: 22px;
-    margin-bottom: 20px;
-}
-
-.status-label {
-    color: #899bb5;
-    font-size: 12px;
-    margin-bottom: 12px;
-}
-
-.status {
-    font-size: 24px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.dot {
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
-    background: #ff4757;
-    box-shadow: 0 0 12px #ff4757;
-}
-
-.status.active {
-    color: #35df99;
-}
-
-.status.active .dot {
-    background: #35df99;
-    box-shadow: 0 0 12px #35df99;
-}
-
-button {
-    width: 100%;
-    padding: 16px;
-    border: none;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: .2s;
-    margin-bottom: 12px;
-}
-
-button:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.15);
-}
-
-.activate {
-    background: #1678ed;
-    color: white;
-}
-
-.deactivate {
-    background: #273449;
-    color: white;
-}
-
-.history {
-    margin-top: 25px;
-    border-top: 1px solid #29364a;
-    padding-top: 20px;
-}
-
-.history h3 {
-    font-size: 14px;
-    margin-bottom: 15px;
-}
-
-#logs {
-    color: #8798b1;
-    font-size: 12px;
-    line-height: 2;
-    max-height: 110px;
-    overflow-y: auto;
-}
-
-.footer {
-    margin-top: 25px;
-    text-align: center;
-    color: #64748b;
-    font-size: 11px;
-}
-
-.fake {
-    color: #f4b942;
-    font-size: 10px;
-    text-align: center;
-    margin-top: 12px;
-}
-</style>
+    .char.glitch {
+      animation: none;
+      opacity: 1;
+      color: #fff !important;
+      text-shadow: -3px 0 #ff0055, 3px 0 #00e5ff !important;
+    }
+  </style>
 </head>
 <body>
+  <canvas id="particles"></canvas>
+  <div class="scanlines"></div>
+  <div class="wrap" id="wrap" aria-label="NÃO MEXER ESTA EXECUTANDO CODIGOS !"></div>
 
-<div class="container">
+  <script>
+    const MESSAGE = "NÃO MEXER ESTA EXECUTANDO CODIGOS !";
+    const wrap = document.getElementById("wrap");
 
-    <div class="logo">SKY SYSTEM</div>
+    // Cria as letras com atraso em cascata na entrada
+    const chars = [...MESSAGE].map((ch, i) => {
+      const span = document.createElement("span");
+      span.className = "char";
+      span.textContent = ch;
+      span.style.animationDelay = `${i * 0.05}s`;
+      wrap.appendChild(span);
+      return span;
+    });
 
-    <h1>Donate Control</h1>
-    <p class="subtitle">Painel de gerenciamento de Donate</p>
-
-    <div class="status-card">
-        <div class="status-label">STATUS DO DONATE</div>
-
-        <div class="status" id="status">
-            <span class="dot"></span>
-            <span id="statusText">DESATIVADO</span>
-        </div>
-    </div>
-
-    <button class="activate" onclick="setDonate(true)">
-        ATIVAR DONATE
-    </button>
-
-    <button class="deactivate" onclick="setDonate(false)">
-        DESATIVAR DONATE
-    </button>
-
-    <div class="history">
-        <h3>Histórico de atividades</h3>
-        <div id="logs">
-            Sistema iniciado.
-        </div>
-    </div>
-
-    <div class="fake">⚠ SIMULAÇÃO — NENHUMA TRANSAÇÃO REAL</div>
-
-    <div class="footer">
-        SKY DONATE CONTROL © 2026
-    </div>
-
-</div>
-
-<script>
-let donateActive = false;
-
-function setDonate(value) {
-    if (donateActive === value) return;
-
-    donateActive = value;
-
-    const status = document.getElementById("status");
-    const text = document.getElementById("statusText");
-
-    if (value) {
-        status.classList.add("active");
-        text.textContent = "ATIVADO";
-        addLog("Donate ativado com sucesso.");
-    } else {
-        status.classList.remove("active");
-        text.textContent = "DESATIVADO";
-        addLog("Donate desativado.");
+    // Partículas de fundo
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+    let W, H;
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
     }
-}
+    resize();
+    window.addEventListener("resize", resize);
 
-function addLog(message) {
-    const logs = document.getElementById("logs");
-    const time = new Date().toLocaleTimeString("pt-BR");
+    const particles = Array.from({ length: 90 }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 2 + 0.5,
+      vy: Math.random() * 0.6 + 0.2,
+      hue: Math.random() * 360
+    }));
 
-    const entry = document.createElement("div");
-    entry.textContent = "[" + time + "] " + message;
+    // Glitch aleatório em uma letra
+    function glitchRandom() {
+      const el = chars[Math.floor(Math.random() * chars.length)];
+      if (!el || el.textContent === " ") return;
+      el.classList.add("glitch");
+      setTimeout(() => el.classList.remove("glitch"), 120 + Math.random() * 150);
+    }
+    setInterval(glitchRandom, 700);
 
-    logs.prepend(entry);
-}
-</script>
+    const start = performance.now();
 
+    function frame(now) {
+      const t = (now - start) / 1000;
+
+      // Partículas
+      ctx.clearRect(0, 0, W, H);
+      for (const p of particles) {
+        p.y -= p.vy;
+        if (p.y < -5) { p.y = H + 5; p.x = Math.random() * W; }
+        const hue = (p.hue + t * 20) % 360;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${hue}, 100%, 70%, 0.7)`;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = `hsl(${hue}, 100%, 60%)`;
+        ctx.fill();
+      }
+
+      // Letras: onda, escala e cor (só depois da entrada)
+      chars.forEach((el, i) => {
+        if (el.classList.contains("glitch")) return;
+        const wave = Math.sin(t * 3 - i * 0.35);
+        const y = wave * 10;
+        const scale = 1 + Math.max(0, wave) * 0.12;
+        const hue = (t * 60 + i * 18) % 360;
+        const color = `hsl(${hue}, 100%, 68%)`;
+        el.style.transform = `translateY(${y}px) scale(${scale})`;
+        el.style.color = color;
+        el.style.textShadow = `0 0 ${10 + Math.max(0, wave) * 16}px ${color}`;
+      });
+
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  </script>
 </body>
 </html>
